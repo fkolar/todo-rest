@@ -1,13 +1,13 @@
 # TodoRest
 
-Simple example to get simpel usecase going using:
+Simple example to get simple use-case going using:
   - Apollo, LoonaJS and Apollo Rest Link 
   
-There is a `rest` folder that host rest-like endpoint. 
-
-https://www.apollographql.com/docs/link/links/rest/
+ https://www.apollographql.com/docs/link/links/rest/
 
 
+
+There is a `rest/` folder that host rest-like endpoint.
 
 #Running 
 
