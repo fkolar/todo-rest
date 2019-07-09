@@ -1,16 +1,28 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import {NgModule} from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {MatFormFieldModule, MatInputModule, MatListModule,} from '@angular/material';
 
-import { AppComponent } from './app.component';
+import {GraphQLModule} from './graphql.module';
+import {AppComponent} from './app.component';
+import {TodosListComponent} from './todos/todos-list.component';
+import {AddTodoComponent} from './todos/add-todo.component';
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
+  declarations: [AppComponent, TodosListComponent, AddTodoComponent],
   imports: [
-    BrowserModule
+    BrowserModule,
+    FormsModule,
+    ReactiveFormsModule,
+    BrowserAnimationsModule,
+    MatListModule,
+    MatFormFieldModule,
+    MatInputModule,
+    GraphQLModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {
+}
