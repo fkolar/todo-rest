@@ -1,7 +1,7 @@
 const todos =  [
   {
     id: 1,
-    description: "Go for lunc by 2pm",
+    description: "Go for lunch by 2pm",
     active: true,
     completed: false,
     __typename: 'Todo',
