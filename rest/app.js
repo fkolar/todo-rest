@@ -1,17 +1,19 @@
 import db from './db';
 import express from 'express';
+import cors from 'cors';
 const app = express();
+
+app.use(cors({
+  origin: '*'
+}));
+
 
 // get all todos
 app.get('/api/todos', (req, res) => {
 
   console.log('get all todos: ', req);
+  res.status(200).send(db)
 
-  res.status(200).send({
-    success: 'true',
-    message: 'todos retrieved successfully',
-    data: db
-  })
 });
 
 
