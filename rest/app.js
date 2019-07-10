@@ -17,6 +17,19 @@ app.get('/api/todos', (req, res) => {
 });
 
 
+// get all todos by completed
+app.get('/api/todos/q', (req, res) => {
+  const isCompleted = req.query['completed'] == 'true' ? true : false;
+
+  console.log('get all todos: ', isCompleted);
+  console.log('get all todos: ', req.query['completed']);
+  res.status(200).send(db.filter((todo) => isCompleted ? todo.completed : !todo.completed))
+
+});
+
+
+
+
 app.post('/api/todos', (req, res) => {
   console.log('create todo: ', req);
 
