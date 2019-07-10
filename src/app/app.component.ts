@@ -4,7 +4,7 @@ import {Observable} from 'rxjs';
 import {pluck, tap} from 'rxjs/operators';
 
 import {AddTodo, ToggleTodo} from './todos/todos.actions';
-import {GetActiveTodos} from './todos/todos.graphql';
+import {GetActiveTodos, GetCompletedTodos} from './todos/todos.graphql';
 
 @Component({
   selector: 'app-root',
@@ -67,6 +67,12 @@ export class AppComponent {
       }),
       pluck('data', 'todos')
     );
+
+
+    this.completed = this.loona.query({
+      query: GetCompletedTodos,
+      fetchPolicy: 'cache-and-network'
+    }).valueChanges.pipe(pluck('data', 'todos'));
 
   }
 

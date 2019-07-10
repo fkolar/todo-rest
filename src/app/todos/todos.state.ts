@@ -1,7 +1,7 @@
 import {Context, Mutation, State, Update} from '@loona/angular';
 
 import {AddTodo, ToggleTodo} from './todos.actions';
-import {GetActiveTodos, completedTodos, todoFragment} from './todos.graphql';
+import {GetActiveTodos, todoFragment, GetCompletedTodos} from './todos.graphql';
 
 export type ID = string;
 
@@ -72,7 +72,7 @@ export class TodosState {
   updateCompleted(mutation, ctx: Context) {
     const todo = mutation.result;
 
-    ctx.patchQuery(completedTodos, data => {
+    ctx.patchQuery(GetCompletedTodos, data => {
       if (todo.completed) {
         data.completed = data.completed.concat([todo]);
       } else {

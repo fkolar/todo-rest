@@ -8,11 +8,11 @@ export const todoFragment = gql`
   }
 `;
 
-export const completedTodos = gql`
-  query GetCompletedTodos {
-    completed  @rest( type: [Todo], path: "/todos/" ) {
-      ...todoFragment
-    }
+export const GetCompletedTodos = gql`
+   query getCompletedTodos {
+    todos(completed: true) @rest( type: Todo, path: "/todos/q?completed={args.completed}" ) {
+        ...todoFragment
+      }
   }
   ${todoFragment}
 `;
