@@ -1,11 +1,17 @@
 import db from './db';
 import express from 'express';
 import cors from 'cors';
+import bodyParser from 'body-parser';
 const app = express();
 
 app.use(cors({
   origin: '*'
 }));
+
+
+app.use(bodyParser.json());
+
+
 
 
 // get all todos
@@ -21,8 +27,6 @@ app.get('/api/todos', (req, res) => {
 app.get('/api/todos/q', (req, res) => {
   const isCompleted = req.query['completed'] == 'true' ? true : false;
 
-  console.log('get all todos: ', isCompleted);
-  console.log('get all todos: ', req.query['completed']);
   res.status(200).send(db.filter((todo) => isCompleted ? todo.completed : !todo.completed))
 
 });
@@ -31,9 +35,9 @@ app.get('/api/todos/q', (req, res) => {
 
 
 app.post('/api/todos', (req, res) => {
-  console.log('create todo: ', req);
+  console.log('POST : ', req.body);
 
-  if (!req.body.description) {
+  if (!req.body) {
     return res.status(400).send({
       success: 'false',
       message: 'description is required'
@@ -41,14 +45,11 @@ app.post('/api/todos', (req, res) => {
   }
   const todo = {
     id: db.length + 1,
-    description: req.body.description
+    description: req.body.description,
+    completed: req.body.completed
   }
-  db.push(todo);
-  return res.status(201).send({
-    success: 'true',
-    message: 'todo added successfully',
-    todo
-  })
+  db.push(todo)
+  return res.status(201).send(todo);
 });
 
 

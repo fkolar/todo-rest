@@ -1,15 +1,14 @@
 import {Context, Mutation, State, Update} from '@loona/angular';
 
 import {AddTodo, ToggleTodo} from './todos.actions';
-import {GetActiveTodos, todoFragment, GetCompletedTodos} from './todos.graphql';
+import {GetActiveTodos, todoFragment} from './todos.graphql';
 
 export type ID = string;
 
 export interface Todo {
-  id: ID;
+  id?: ID;
   description: string;
   completed: boolean;
-  active: boolean;
 }
 
 
@@ -22,22 +21,33 @@ export interface Todo {
     }
   `,
   defaults: {
-    completed: [],
-    active: [],
+    todos: []
   },
 })
 export class TodosState {
   @Mutation(AddTodo)
-  add(args) {
+  addTodo(args) {
+    console.log('Mutation:', args);
     const todo = {
-      id: Math.random().toString(16).substr(2),
+      id: args.id,
       description: args.description,
-      completed: false,
+      completed: args.completed,
       __typename: 'Todo',
     };
 
     return todo;
   }
+
+
+  @Update(AddTodo)
+  updateActiveOnAdd(mutation, ctx: Context) {
+    const todo = mutation.result;
+
+    ctx.patchQuery(GetActiveTodos, data => {
+      data.todos = data.todos.concat([todo]);
+    });
+  }
+
 
   @Mutation(ToggleTodo)
   toggle(args, ctx: Context) {
@@ -46,37 +56,16 @@ export class TodosState {
     });
   }
 
-  @Update(AddTodo)
-  updateActiveOnAdd(mutation, ctx: Context) {
-    const todo = mutation.result;
-
-    ctx.patchQuery(GetActiveTodos, data => {
-      data.active = data.active.concat([todo]);
-    });
-  }
 
   @Update(ToggleTodo)
-  updateActive(mutation, ctx: Context) {
+  updateTodos(mutation, ctx: Context) {
     const todo = mutation.result;
 
     ctx.patchQuery(GetActiveTodos, data => {
       if (todo.completed) {
-        data.active = data.active.filter(o => o.id !== todo.id);
+        console.log(todo.id + ': Todo completed');
       } else {
-        data.active = data.active.concat([todo]);
-      }
-    });
-  }
-
-  @Update(ToggleTodo)
-  updateCompleted(mutation, ctx: Context) {
-    const todo = mutation.result;
-
-    ctx.patchQuery(GetCompletedTodos, data => {
-      if (todo.completed) {
-        data.completed = data.completed.concat([todo]);
-      } else {
-        data.completed = data.completed.filter(o => o.id !== todo.id);
+        console.log(todo.id + ': Todo Active');
       }
     });
   }

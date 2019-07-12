@@ -1,13 +1,16 @@
 import {addTodo, toggleTodo} from './todos.graphql';
+import {Todo} from './todos.state';
 
 export class AddTodo {
   static mutation = addTodo;
 
-  variables: { description: string };
+  variables: {
+    input: Todo
+  };
 
-  constructor(description: string) {
+  constructor(input: Todo) {
     this.variables = {
-      description
+      input
     };
   }
 }

@@ -27,12 +27,11 @@ export const GetActiveTodos = gql`
 `;
 
 export const addTodo = gql`
-  mutation add($text: String!) {
-    addTodo(description: $description) @client {
-      ...todoFragment
-    }
+    mutation addTodo($input: Todo!){
+      addTodo(input: $input) @rest( type: "Todo", method: "POST", path: "/todos" ) {
+       ...todoFragment
+      }
   }
-
   ${todoFragment}
 `;
 
@@ -45,3 +44,5 @@ export const toggleTodo = gql`
 
   ${todoFragment}
 `;
+
+// https://www.contentful.com/blog/2019/03/13/implementing-graphql-rest-api/

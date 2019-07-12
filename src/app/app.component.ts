@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {Loona} from '@loona/angular';
 import {Observable} from 'rxjs';
-import {pluck, tap} from 'rxjs/operators';
+import {pluck} from 'rxjs/operators';
 
 import {AddTodo, ToggleTodo} from './todos/todos.actions';
 import {GetActiveTodos, GetCompletedTodos} from './todos/todos.graphql';
@@ -11,6 +11,7 @@ import {GetActiveTodos, GetCompletedTodos} from './todos/todos.graphql';
   template: `
     <div class="container">
       <app-add-todo (todo)="add($event)"></app-add-todo>
+      <button (click)="fetchTodos()">Reload</button>
       <div class="split">
         <div class="into">
           <app-todos-list name="Active" [todos]="active | async" position="before" (toggle)="toggle($event)"></app-todos-list>
@@ -48,36 +49,27 @@ export class AppComponent {
   completed: Observable<any[]>;
 
   constructor(private loona: Loona) {
-    // this.apollo.query(
-    //   {
-    //     query: GetActiveTodos
-    //   }
-    // ).pipe(
-    //   tap(resust => {
-    //     console.log(resust);
-    //   })
-    // ).subscribe();
 
+    this.fetchTodos();
+  }
+
+  fetchTodos() {
     this.active = this.loona.query({
-      query: GetActiveTodos,
-      fetchPolicy: 'cache-and-network'
+      query: GetActiveTodos
     }).valueChanges.pipe(
-      tap((data) => {
-        console.log(data);
-      }),
       pluck('data', 'todos')
     );
 
-
     this.completed = this.loona.query({
-      query: GetCompletedTodos,
-      fetchPolicy: 'cache-and-network'
+      query: GetCompletedTodos
     }).valueChanges.pipe(pluck('data', 'todos'));
-
   }
 
   add(text: string): void {
-    this.loona.dispatch(new AddTodo(text));
+    this.loona.dispatch(new AddTodo({
+      description: text,
+      completed: false
+    }));
   }
 
   toggle(id: string): void {

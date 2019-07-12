@@ -9,18 +9,17 @@ import {ApolloLink} from 'apollo-link';
 import {RestLink} from 'apollo-link-rest';
 
 
-
-
 export function apolloFactory(loonaLink: LoonaLink, cache: InMemoryCache): ApolloClientOptions<any> {
   const restLink = new RestLink({
     uri: 'http://localhost:5000/api',
     credentials: 'same-origin',
     headers: {
+      Accept: 'application/json',
       'Content-Type': 'application/json'
     }
   });
   return {
-     link: ApolloLink.from([loonaLink, restLink]),
+    link: ApolloLink.from([loonaLink, restLink]),
     cache
   };
 }
