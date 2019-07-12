@@ -29,6 +29,7 @@
     "apollo-cache-inmemory": "1.5.1",
     "apollo-client": "2.5.1",
     "apollo-link": "^1.2.12",
+    "apollo-link-error": "^1.1.11",
     "apollo-link-rest": "^0.7.3",
     "core-js": "^2.5.4",
     "graphql": "^14.4.2",
