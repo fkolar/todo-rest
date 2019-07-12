@@ -36,13 +36,13 @@ export const addTodo = gql`
 `;
 
 export const toggleTodo = gql`
-  mutation toggle($id: ID!) {
-    toggleTodo(id: $id) @client {
-      ...todoFragment
+  mutation toggle($input: TodoToggleInput!) {
+    toggleTodo(input: $input) @rest( type: "Todo", method: "PUT", path: "/todos/{args.input.id}/" ) {
+       ...todoFragment
     }
   }
-
-  ${todoFragment}
+   ${todoFragment}
 `;
 
 // https://www.contentful.com/blog/2019/03/13/implementing-graphql-rest-api/
+// https://novemberfive.co/blog/putting-apollo-client-to-rest-api-tutorial

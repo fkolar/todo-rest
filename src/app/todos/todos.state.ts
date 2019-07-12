@@ -1,14 +1,14 @@
 import {Context, Mutation, State, Update} from '@loona/angular';
 
 import {AddTodo, ToggleTodo} from './todos.actions';
-import {GetActiveTodos, todoFragment} from './todos.graphql';
+import {GetActiveTodos, GetCompletedTodos, todoFragment} from './todos.graphql';
 
 export type ID = string;
 
 export interface Todo {
   id?: ID;
-  description: string;
-  completed: boolean;
+  description?: string;
+  completed?: boolean;
 }
 
 
@@ -58,15 +58,29 @@ export class TodosState {
 
 
   @Update(ToggleTodo)
-  updateTodos(mutation, ctx: Context) {
+  updateActiveTodos(mutation, ctx: Context) {
     const todo = mutation.result;
-
     ctx.patchQuery(GetActiveTodos, data => {
       if (todo.completed) {
-        console.log(todo.id + ': Todo completed');
+        data.todos = data.todos.filter(o => o.id !== todo.id);
       } else {
-        console.log(todo.id + ': Todo Active');
+        data.todos = data.todos.concat([todo]);
+      }
+    });
+  }
+
+
+  @Update(ToggleTodo)
+  updateCompletedTodos(mutation, ctx: Context) {
+    const todo = mutation.result;
+
+    ctx.patchQuery(GetCompletedTodos, data => {
+      if (todo.completed) {
+        data.todos = data.todos.concat([todo]);
+      } else {
+        data.todos = data.todos.filter(o => o.id !== todo.id);
       }
     });
   }
 }
+

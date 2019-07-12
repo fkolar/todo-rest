@@ -25,13 +25,12 @@ app.get('/api/todos', (req, res) => {
 
 // get all todos by completed
 app.get('/api/todos/q', (req, res) => {
-  const isCompleted = req.query['completed'] == 'true' ? true : false;
+  console.log('get todos. Completed:', req.query['completed']);
 
+  const isCompleted = req.query['completed'] == 'true' ? true : false;
   res.status(200).send(db.filter((todo) => isCompleted ? todo.completed : !todo.completed))
 
 });
-
-
 
 
 app.post('/api/todos', (req, res) => {
@@ -53,6 +52,13 @@ app.post('/api/todos', (req, res) => {
 });
 
 
+app.put('/api/todos/:id', (req, res) => {
+  let todo = db.filter((item) => item.id === parseInt(req.param("id")))[0];
+  todo.completed = !todo.completed;
+  return res.status(201).send(todo);
+});
+
+
 app.get('/api/todos/:id', (req, res) => {
   console.log('get todo by Id: ', req);
 
@@ -62,7 +68,7 @@ app.get('/api/todos/:id', (req, res) => {
       return res.status(200).send({
         success: 'true',
         message: 'todo retrieved successfully',
-        data: todo,
+        data: todo
       });
     }
   });

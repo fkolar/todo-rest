@@ -38,7 +38,6 @@ export function apolloFactory(loonaLink: LoonaLink, cache: InMemoryCache, errorH
     }
   });
 
-
   return {
     link: ApolloLink.from([loonaLink, errorLink,  restLink]),
     cache

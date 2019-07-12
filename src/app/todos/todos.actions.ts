@@ -1,6 +1,11 @@
 import {addTodo, toggleTodo} from './todos.graphql';
 import {Todo} from './todos.state';
 
+export interface TodoToggleInput {
+  id: string;
+}
+
+
 export class AddTodo {
   static mutation = addTodo;
 
@@ -15,14 +20,15 @@ export class AddTodo {
   }
 }
 
+
 export class ToggleTodo {
   static mutation = toggleTodo;
 
-  variables: { id: string };
+  variables: { input: TodoToggleInput };
 
-  constructor(id: string) {
+  constructor(input: TodoToggleInput) {
     this.variables = {
-      id,
+      input
     };
   }
 }

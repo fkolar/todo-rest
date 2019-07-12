@@ -2,7 +2,7 @@ const fetch = require('node-fetch');
 
 
 postData('http://localhost:5000/api/todos', {
-  description: "asdfasf",
+  description: "This is from external API",
   completed: false
 })
   .then(data => console.log(JSON.stringify(data))) // JSON-string from `response.json()` call

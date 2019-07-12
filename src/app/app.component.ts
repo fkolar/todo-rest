@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {Loona} from '@loona/angular';
 import {Observable} from 'rxjs';
-import {pluck} from 'rxjs/operators';
+import {map, pluck} from 'rxjs/operators';
 
 import {AddTodo, ToggleTodo} from './todos/todos.actions';
 import {GetActiveTodos, GetCompletedTodos} from './todos/todos.graphql';
@@ -55,13 +55,13 @@ export class AppComponent {
 
   fetchTodos() {
     this.active = this.loona.query({
-      query: GetActiveTodos
+      query: GetActiveTodos,
     }).valueChanges.pipe(
       pluck('data', 'todos')
     );
 
     this.completed = this.loona.query({
-      query: GetCompletedTodos
+      query: GetCompletedTodos,
     }).valueChanges.pipe(pluck('data', 'todos'));
   }
 
@@ -73,6 +73,8 @@ export class AppComponent {
   }
 
   toggle(id: string): void {
-    this.loona.dispatch(new ToggleTodo(id));
+    this.loona.dispatch(new ToggleTodo({
+      id
+    }));
   }
 }
